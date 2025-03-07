@@ -44,11 +44,11 @@
             var user = document.getElementById("username").value;
             var pass = document.getElementById("password").value;
             
-            if (user === "admin" && pass === "1234") {  // Example username & password
-                alert("Login Successful!");
+            if (user === "admin" && pass === "1234") {  // Example login credentials
                 window.location.href = "index.html";  // Redirect to main page
             } else {
-                alert("Invalid login. Try again.");
+                document.getElementById("username").value = "";
+                document.getElementById("password").value = "";
             }
         }
     </script>
