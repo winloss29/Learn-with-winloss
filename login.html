@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Learn with Winloss</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 100px;
+        }
+        .login-box {
+            width: 300px;
+            padding: 20px;
+            margin: auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Enter username">
+        <input type="password" id="password" placeholder="Enter password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <script>
+        function login() {
+            var user = document.getElementById("username").value;
+            var pass = document.getElementById("password").value;
+            
+            if (user === "admin" && pass === "1234") {  // Example username & password
+                alert("Login Successful!");
+                window.location.href = "index.html";  // Redirect to main page
+            } else {
+                alert("Invalid login. Try again.");
+            }
+        }
+    </script>
+</body>
+</html>
