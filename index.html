@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Learning Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>E-Learning Platform</h1>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#courses">Courses</a>
+            <a href="#quiz">Quiz</a>
+            <a href="#login">Login</a>
+        </nav>
+    </header>
+    
+    <section id="home" class="hero">
+        <h2>Learn Polity, Economics & History</h2>
+        <p>Join thousands of students and enhance your knowledge.</p>
+        <a href="#courses" class="btn">Explore Courses</a>
+    </section>
+    
+    <section id="courses" class="courses">
+        <h2>Available Courses</h2>
+        <div class="course-list">
+            <div class="course">
+                <h3>Polity</h3>
+                <p>Understand the Indian Constitution and Governance.</p>
+                <a href="#" class="btn">Start Learning</a>
+            </div>
+            <div class="course">
+                <h3>Economics</h3>
+                <p>Learn about economic principles and global markets.</p>
+                <a href="#" class="btn">Start Learning</a>
+            </div>
+            <div class="course">
+                <h3>History</h3>
+                <p>Explore ancient, medieval, and modern history.</p>
+                <a href="#" class="btn">Start Learning</a>
+            </div>
+        </div>
+    </section>
+    
+    <section id="quiz" class="quiz">
+        <h2>Test Your Knowledge</h2>
+        <button onclick="startQuiz()" class="btn">Start Quiz</button>
+    </section>
+    
+    <section id="login" class="login">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()" class="btn">Login</button>
+    </section>
+    
+    <script>
+        function startQuiz() {
+            const questions = [
+                { question: "Who wrote the Indian Constitution?", answer: "B.R. Ambedkar" },
+                { question: "What is GDP?", answer: "Gross Domestic Product" }
+            ];
+            let score = 0;
+            questions.forEach(q => {
+                let userAnswer = prompt(q.question);
+                if (userAnswer && userAnswer.toLowerCase() === q.answer.toLowerCase()) {
+                    score++;
+                }
+            });
+            alert(`Your Score: ${score}/${questions.length}`);
+        }
+
+        function login() {
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+            if (username && password) {
+                alert("Login Successful!");
+            } else {
+                alert("Please enter username and password.");
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #333;
+            color: white;
+            padding: 15px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .hero {
+            padding: 50px;
+            background: #f4f4f4;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: blue;
+            color: white;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        .courses, .quiz, .login {
+            padding: 20px;
+        }
+        .course-list {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .course {
+            padding: 20px;
+            background: #ddd;
+            border-radius: 10px;
+        }
+    </style>
+</body>
+</html>
