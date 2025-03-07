@@ -10,79 +10,160 @@
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
-            text-align: center;
         }
         header {
             background-color: #007bff;
             color: white;
             padding: 20px;
+            text-align: center;
             font-size: 24px;
         }
-        nav {
-            display: flex;
-            justify-content: center;
+        .menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;
             background-color: #333;
-            padding: 10px 0;
+            padding-top: 60px;
+            transition: 0.3s;
         }
-        nav a {
-            color: white;
-            padding: 14px 20px;
+        .sidebar a {
+            padding: 15px;
             text-decoration: none;
-            font-size: 18px;
+            color: white;
+            display: block;
+            font-size: 20px;
+            cursor: pointer;
         }
-        nav a:hover {
+        .sidebar a:hover {
             background-color: #575757;
         }
         .container {
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .subjects {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
         }
         .subject-card {
-            background: white;
-            margin: 20px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-            width: 30%;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            padding: 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: left;
+            width: 300px;
         }
-        footer {
-            background-color: #333;
-            color: white;
+        .options {
+            display: none;
             padding: 10px;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            background: white;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .options a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+        }
+        .options a:hover {
+            background-color: #ddd;
         }
     </style>
 </head>
 <body>
-    <header>Learn With Winloss</header>
+    <header>
+        <span class="menu" onclick="toggleSidebar()">&#x2630;</span>
+        Learn With Winloss
+    </header>
     
-    <nav>
-        <a href="#polity">Polity</a>
-        <a href="#economics">Economics</a>
-        <a href="#history">History</a>
-    </nav>
+    <div class="sidebar" id="sidebar">
+        <a onclick="navigateTo('home')">Home</a>
+        <a onclick="showSubject('polity-options')">Polity</a>
+        <a onclick="showSubject('economics-options')">Economics</a>
+        <a onclick="showSubject('history-options')">History</a>
+    </div>
     
-    <div class="container">
-        <div id="polity" class="subject-card">
-            <h2>Polity</h2>
-            <p>Learn about the Indian Constitution, governance, and political structure.</p>
-        </div>
-        
-        <div id="economics" class="subject-card">
-            <h2>Economics</h2>
-            <p>Understand economic principles, policies, and financial systems.</p>
-        </div>
-        
-        <div id="history" class="subject-card">
-            <h2>History</h2>
-            <p>Explore ancient, medieval, and modern history with in-depth insights.</p>
+    <div class="container" id="home">
+        <div class="subjects">
+            <div class="subject-card" onclick="toggleOptions('polity-options')">Polity</div>
+            <div id="polity-options" class="options">
+                <a href="#">Syllabus</a>
+                <a href="#">Materials</a>
+                <a href="#">Videos</a>
+                <a href="#">Test</a>
+                <a href="#">Your Progress</a>
+                <a href="#">Your Notes</a>
+                <a href="#">Bookmarks</a>
+            </div>
+            
+            <div class="subject-card" onclick="toggleOptions('economics-options')">Economics</div>
+            <div id="economics-options" class="options">
+                <a href="#">Syllabus</a>
+                <a href="#">Materials</a>
+                <a href="#">Videos</a>
+                <a href="#">Test</a>
+                <a href="#">Your Progress</a>
+                <a href="#">Your Notes</a>
+                <a href="#">Bookmarks</a>
+            </div>
+            
+            <div class="subject-card" onclick="toggleOptions('history-options')">History</div>
+            <div id="history-options" class="options">
+                <a href="#">Syllabus</a>
+                <a href="#">Materials</a>
+                <a href="#">Videos</a>
+                <a href="#">Test</a>
+                <a href="#">Your Progress</a>
+                <a href="#">Your Notes</a>
+                <a href="#">Bookmarks</a>
+            </div>
         </div>
     </div>
     
-    <footer>
-        &copy; 2025 Learn With Winloss | All Rights Reserved
-    </footer>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.style.left = sidebar.style.left === "0px" ? "-250px" : "0px";
+        }
+
+        function toggleOptions(id) {
+            var options = document.getElementById(id);
+            if (options.style.display === "block") {
+                options.style.display = "none";
+            } else {
+                options.style.display = "block";
+            }
+        }
+
+        function navigateTo(section) {
+            document.getElementById("home").style.display = "block";
+            toggleSidebar();
+        }
+
+        function showSubject(id) {
+            document.getElementById("home").style.display = "block";
+            document.getElementById("polity-options").style.display = "none";
+            document.getElementById("economics-options").style.display = "none";
+            document.getElementById("history-options").style.display = "none";
+            document.getElementById(id).style.display = "block";
+            toggleSidebar();
+        }
+    </script>
 </body>
 </html>
