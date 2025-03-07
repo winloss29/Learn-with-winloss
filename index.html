@@ -3,128 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Learning Platform</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <h1>E-Learning Platform</h1>
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#courses">Courses</a>
-            <a href="#quiz">Quiz</a>
-            <a href="#login">Login</a>
-        </nav>
-    </header>
-    
-    <section id="home" class="hero">
-        <h2>Learn Polity, Economics & History</h2>
-        <p>Join thousands of students and enhance your knowledge.</p>
-        <a href="#courses" class="btn">Explore Courses</a>
-    </section>
-    
-    <section id="courses" class="courses">
-        <h2>Available Courses</h2>
-        <div class="course-list">
-            <div class="course">
-                <h3>Polity</h3>
-                <p>Understand the Indian Constitution and Governance.</p>
-                <a href="#" class="btn">Start Learning</a>
-            </div>
-            <div class="course">
-                <h3>Economics</h3>
-                <p>Learn about economic principles and global markets.</p>
-                <a href="#" class="btn">Start Learning</a>
-            </div>
-            <div class="course">
-                <h3>History</h3>
-                <p>Explore ancient, medieval, and modern history.</p>
-                <a href="#" class="btn">Start Learning</a>
-            </div>
-        </div>
-    </section>
-    
-    <section id="quiz" class="quiz">
-        <h2>Test Your Knowledge</h2>
-        <button onclick="startQuiz()" class="btn">Start Quiz</button>
-    </section>
-    
-    <section id="login" class="login">
-        <h2>Login</h2>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="login()" class="btn">Login</button>
-    </section>
-    
-    <script>
-        function startQuiz() {
-            const questions = [
-                { question: "Who wrote the Indian Constitution?", answer: "B.R. Ambedkar" },
-                { question: "What is GDP?", answer: "Gross Domestic Product" }
-            ];
-            let score = 0;
-            questions.forEach(q => {
-                let userAnswer = prompt(q.question);
-                if (userAnswer && userAnswer.toLowerCase() === q.answer.toLowerCase()) {
-                    score++;
-                }
-            });
-            alert(`Your Score: ${score}/${questions.length}`);
-        }
-
-        function login() {
-            let username = document.getElementById("username").value;
-            let password = document.getElementById("password").value;
-            if (username && password) {
-                alert("Login Successful!");
-            } else {
-                alert("Please enter username and password.");
-            }
-        }
-    </script>
-
+    <title>Learn With Winloss</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
             padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
         }
         header {
-            background: #333;
+            background-color: #007bff;
             color: white;
-            padding: 15px;
+            padding: 20px;
+            font-size: 24px;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+            padding: 10px 0;
         }
         nav a {
             color: white;
+            padding: 14px 20px;
             text-decoration: none;
-            margin: 0 10px;
+            font-size: 18px;
         }
-        .hero {
-            padding: 50px;
-            background: #f4f4f4;
+        nav a:hover {
+            background-color: #575757;
         }
-        .btn {
+        .container {
+            padding: 20px;
+        }
+        .subject-card {
+            background: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             display: inline-block;
-            padding: 10px 20px;
-            background: blue;
+            width: 30%;
+        }
+        footer {
+            background-color: #333;
             color: white;
-            text-decoration: none;
-            margin-top: 10px;
-        }
-        .courses, .quiz, .login {
-            padding: 20px;
-        }
-        .course-list {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-        .course {
-            padding: 20px;
-            background: #ddd;
-            border-radius: 10px;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
         }
     </style>
+</head>
+<body>
+    <header>Learn With Winloss</header>
+    
+    <nav>
+        <a href="#polity">Polity</a>
+        <a href="#economics">Economics</a>
+        <a href="#history">History</a>
+    </nav>
+    
+    <div class="container">
+        <div id="polity" class="subject-card">
+            <h2>Polity</h2>
+            <p>Learn about the Indian Constitution, governance, and political structure.</p>
+        </div>
+        
+        <div id="economics" class="subject-card">
+            <h2>Economics</h2>
+            <p>Understand economic principles, policies, and financial systems.</p>
+        </div>
+        
+        <div id="history" class="subject-card">
+            <h2>History</h2>
+            <p>Explore ancient, medieval, and modern history with in-depth insights.</p>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; 2025 Learn With Winloss | All Rights Reserved
+    </footer>
 </body>
 </html>
