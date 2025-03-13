@@ -1012,94 +1012,101 @@ function toggleContactDetails() {
                 element.classList.add('active');
             }
         }
-        
         function searchCourses() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const sections = document.querySelectorAll('.section');
-            const subcategories = document.querySelectorAll('.subcategory');
-            const noResults = document.getElementById('noResults');
-            
-            let hasResults = false;
-            
-            // If search term is empty, show all sections and hide no results
-            if (searchTerm === '') {
-                sections.forEach(section => {
-                    if (section.id !== 'home') {
-                        section.style.display = 'block';
-                    }
-                });
-                
-                subcategories.forEach(sub => {
-                    sub.style.display = 'block';
-                });
-                
-                noResults.style.display = 'none';
-                return;
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+    const sections = document.querySelectorAll('.section');
+    const subcategories = document.querySelectorAll('.subcategory');
+    const contactSection = document.getElementById('contact'); // Contact Section
+    const noResults = document.getElementById('noResults');
+
+    let hasResults = false;
+
+    // If search term is empty, show all sections and hide no results
+    if (searchTerm === '') {
+        sections.forEach(section => {
+            if (section.id !== 'home') {
+                section.style.display = 'block';
             }
-            
-            // Hide all sections except home
-            sections.forEach(section => {
-                if (section.id !== 'home') {
-                    section.style.display = 'none';
-                }
-            });
-            
-            // First, check if any section's title matches the search term
-            sections.forEach(section => {
-                const sectionTitle = section.querySelector('h2').textContent.toLowerCase();
-                const sectionDesc = section.querySelector('p').textContent.toLowerCase();
-                
-                if ((sectionTitle.includes(searchTerm) || sectionDesc.includes(searchTerm)) && section.id !== 'home') {
-                    section.style.display = 'block';
-                    
-                    // Make sure the subcategories are expanded
-                    const subId = section.id + '-sub';
-                    const subElement = document.getElementById(subId);
-                    if (subElement) {
-                        subElement.classList.add('active');
-                    }
-                    
-                    // Show all subcategories in this section
-                    const sectionSubcategories = section.querySelectorAll('.subcategory');
-                    sectionSubcategories.forEach(sub => {
-                        sub.style.display = 'block';
-                    });
-                    
-                    hasResults = true;
-                }
-            });
-            
-            // Then check if any subcategory matches the search term
-            subcategories.forEach(sub => {
-                const title = sub.querySelector('h3').textContent.toLowerCase();
-                const desc = sub.querySelector('p').textContent.toLowerCase();
-                const category = sub.getAttribute('data-category');
-                
-                sub.style.display = 'none'; // Hide by default
-                
-                if (title.includes(searchTerm) || desc.includes(searchTerm)) {
-                    // Show the parent section
-                    const parentSection = document.getElementById(category);
-                    if (parentSection) {
-                        parentSection.style.display = 'block';
-                    }
-                    
-                    // Make sure the subcategories are expanded
-                    const subId = category + '-sub';
-                    const subElement = document.getElementById(subId);
-                    if (subElement) {
-                        subElement.classList.add('active');
-                    }
-                    
-                    // Show this subcategory
-                    sub.style.display = 'block';
-                    hasResults = true;
-                }
-            });
-            
-            // Show or hide "no results" message
-            noResults.style.display = hasResults ? 'none' : 'block';
+        });
+
+        subcategories.forEach(sub => {
+            sub.style.display = 'block';
+        });
+
+        if (contactSection) contactSection.style.display = 'block';
+
+        noResults.style.display = 'none';
+        return;
+    }
+
+    // Hide all sections except home
+    sections.forEach(section => {
+        if (section.id !== 'home') {
+            section.style.display = 'none';
         }
+    });
+
+    // First, check if any section's title or description matches the search term
+    sections.forEach(section => {
+        const sectionTitle = section.querySelector('h2')?.textContent.toLowerCase() || '';
+        const sectionDesc = section.querySelector('p')?.textContent.toLowerCase() || '';
+
+        if ((sectionTitle.includes(searchTerm) || sectionDesc.includes(searchTerm)) && section.id !== 'home') {
+            section.style.display = 'block';
+
+            // Expand subcategories if available
+            const subId = section.id + '-sub';
+            const subElement = document.getElementById(subId);
+            if (subElement) {
+                subElement.classList.add('active');
+            }
+
+            // Show all subcategories in this section
+            const sectionSubcategories = section.querySelectorAll('.subcategory');
+            sectionSubcategories.forEach(sub => {
+                sub.style.display = 'block';
+            });
+
+            hasResults = true;
+        }
+    });
+
+    // Check for subcategory matches
+    subcategories.forEach(sub => {
+        const title = sub.querySelector('h3')?.textContent.toLowerCase() || '';
+        const desc = sub.querySelector('p')?.textContent.toLowerCase() || '';
+        const category = sub.getAttribute('data-category');
+
+        sub.style.display = 'none'; // Hide by default
+
+        if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+            const parentSection = document.getElementById(category);
+            if (parentSection) {
+                parentSection.style.display = 'block';
+            }
+
+            const subId = category + '-sub';
+            const subElement = document.getElementById(subId);
+            if (subElement) {
+                subElement.classList.add('active');
+            }
+
+            sub.style.display = 'block';
+            hasResults = true;
+        }
+    });
+
+    // Contact Us Section Visibility
+    if (contactSection && (
+        "contact phone email instagram".includes(searchTerm)
+    )) {
+        contactSection.style.display = 'block';
+        hasResults = true;
+    }
+
+    // Show or hide "no results" message
+    noResults.style.display = hasResults ? 'none' : 'block';
+}
         
         // Close sidebar when clicking outside
         document.addEventListener('click', function(event) {
