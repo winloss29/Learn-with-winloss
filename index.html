@@ -82,57 +82,86 @@
             font-weight: 600;
         }
         
-        .search-container {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
-            padding: 8px 15px;
-            transition: var(--transition);
-            max-width: 300px;
-            width: 100%;
-        }
-        
-        .search-container:focus-within {
-            background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .search-container input {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: white;
-            width: 100%;
-            padding: 5px;
-        }
-        
-        .search-container input::placeholder {
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .search-container:focus-within input {
-            color: var(--dark);
-        }
-        
-        .search-container:focus-within input::placeholder {
-            color: var(--gray);
-        }
-        
-        .search-container button {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .search-container:focus-within button {
-            color: var(--primary);
-        }
-        
+       .search-container {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #0d1117, #1f2937); /* Dark gradient */
+    border: 2px solid transparent;
+    border-radius: 30px;
+    padding: 10px 20px;
+    max-width: 350px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 255, 150, 0.4); /* Neon glow */
+    transition: all 0.3s ease-in-out;
+}
+
+.search-container:focus-within {
+    border: 2px solid #00FFA3;
+    box-shadow: 0 0 15px #00FFA3;
+}
+
+.search-container input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    animation: text-glow 1.5s infinite alternate;
+}
+
+@keyframes text-glow {
+    from { text-shadow: 0 0 5px #00FFA3; }
+    to { text-shadow: 0 0 10px #00FFA3; }
+}
+
+.search-container input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.search-container:focus-within input::placeholder {
+    opacity: 0.3;
+}
+
+.search-container button {
+    background: #00FFA3;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0d1117;
+    transition: background 0.3s ease, transform 0.2s ease;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 10px #00FFA3; }
+    50% { box-shadow: 0 0 15px #00FFA3; }
+    100% { box-shadow: 0 0 10px #00FFA3; }
+}
+
+.search-container button:hover {
+    background: #1db954; /* Spotify green tone for variety */
+    transform: scale(1.1);
+}
+#searchInput {
+    color: #00FF00;  /* Green text for typed content */
+    caret-color: #00FF00;  /* Green cursor for consistency */
+}
+
+#searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.6);  /* Subtle white placeholder */
+}
+
+
         .overlay {
             position: fixed;
             top: 0;
@@ -538,8 +567,69 @@
     .contact-details { display: none; margin-top: 15px; }
     .contact-details.active { display: block; }
     .contact-details ul { list-style-type: none; padding: 0; }
-    .contact-details ul li { padding: 5px 0; display: flex; align-items: center; gap: 8px; }
-    </style>
+    .contact-details ul li { padding: 5px 0; display: flex; align-items: center; gap: 8px; }.robot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 999;
+}
+.robot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #FFD700; /* Restored Yellow Design */
+    color: #333;
+    padding: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    z-index: 999; /* Ensures Robot Stays on Top */
+}
+
+.robot-container:hover {
+    transform: scale(1.1);
+}
+
+.robot-options {
+    display: none;
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    background-color: #fff;
+    color: #333;
+    border: 2px solid #FFD700; /* Yellow Outline for Consistency */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    width: 230px; /* Improved Width */
+    padding: 10px;
+}
+
+.robot-options button {
+    display: block;
+    background: transparent;
+    border: none;
+    padding: 12px 15px;
+    text-align: left;
+    cursor: pointer;
+    color: #4CAF50;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+}
+
+.robot-options button:last-child {
+    border-bottom: none;
+}
+
+.robot-options .close-btn {
+    color: #f44336;
+    font-weight: bold;
+}
+
+
+</style>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -962,6 +1052,19 @@
 </section>
         </div>
     </div>
+<div class="robot-container" onclick="toggleRobot()">
+    <i class="fas fa-robot robot-icon"></i>
+</div>
+<div class="robot-container" onclick="toggleRobot()">
+    <i class="fas fa-robot robot-icon"></i>
+    <div class="robot-options" id="robotOptions">
+        <button onclick="refreshPage()">🔄 Stuck somewhere? Refresh here</button>
+        <button onclick="scrollToContact()">📞 Looking to contact us? Click here</button>
+        <button onclick="enrollNow()">✅ Click to Enroll Now!</button>
+        <button class="close-btn" onclick="closeRobot(event)">❌ Close</button>
+    </div>
+</div>
+
 
     <script>
 function toggleContactDetails() {
@@ -1135,6 +1238,37 @@ function toggleContactDetails() {
                 observer.observe(section);
             });
         });
+
+
+function toggleRobot() {
+    const robotOptions = document.getElementById('robotOptions');
+    robotOptions.style.display = robotOptions.style.display === 'block' ? 'none' : 'block';
+}
+function closeRobot(event) {
+    event.stopPropagation(); // Prevents triggering the robot toggle
+    document.getElementById('robotOptions').style.display = 'none';
+}
+
+
+function refreshPage() {
+    location.reload();
+}
+
+function scrollToContact() {
+    const contactDetails = document.getElementById('contact');
+    if (contactDetails) {
+        contactDetails.scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => {
+            toggleRobot(); // Ensures robot stays functional after scrolling
+        }, 500);
+    }
+}
+
+function enrollNow() {
+    alert('Search for a subject and enroll further.');
+    toggleRobot();  // Ensures robot remains functional after alert
+}
+
     </script>
 </body>
 </html>
