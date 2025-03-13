@@ -3,167 +3,1131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn With Winloss</title>
+    <title>Tutor India - E-Learning Platform</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3f37c9;
+            --secondary: #4cc9f0;
+            --dark: #212121;
+            --light: #f8f9fa;
+            --success: #4ade80;
+            --danger: #f43f5e;
+            --warning: #fb923c;
+            --gray: #94a3b8;
+            --border-radius: 12px;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 24px;
+        
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
         }
-        .menu {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        .sidebar {
-            height: 100%;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: -250px;
-            background-color: #333;
-            padding-top: 60px;
-            transition: 0.3s;
-        }
-        .sidebar a {
-            padding: 15px;
-            text-decoration: none;
-            color: white;
-            display: block;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .sidebar a:hover {
-            background-color: #575757;
-        }
+        
         .container {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
             padding: 20px;
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .subjects {
+        
+        .logo-container {
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            align-items: center;
+        }
+        
+        .menu-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: var(--transition);
+        }
+        
+        .menu-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        header h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 8px 15px;
+            transition: var(--transition);
+            max-width: 300px;
             width: 100%;
         }
-        .subject-card {
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            padding: 40px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: left;
-            width: 300px;
-        }
-        .options {
-            display: none;
-            padding: 10px;
+        
+        .search-container:focus-within {
             background: white;
-            border-radius: 8px;
-            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .options a {
-            display: block;
-            padding: 10px;
+        
+        .search-container input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            width: 100%;
+            padding: 5px;
+        }
+        
+        .search-container input::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .search-container:focus-within input {
+            color: var(--dark);
+        }
+        
+        .search-container:focus-within input::placeholder {
+            color: var(--gray);
+        }
+        
+        .search-container button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .search-container:focus-within button {
+            color: var(--primary);
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            z-index: 999;
+            transition: var(--transition);
+            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        
+        .sidebar.active {
+            left: 0;
+        }
+        
+        .sidebar-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .sidebar-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .sidebar-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .sidebar-profile {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .profile-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-info h3 {
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+        
+        .profile-info p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .sidebar ul {
+            list-style-type: none;
+            padding: 10px 0;
+        }
+        
+        .sidebar ul li {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            border-left: 4px solid transparent;
+        }
+        
+        .sidebar ul li i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .sidebar ul li:hover {
+            background-color: #f1f5f9;
+            border-left-color: var(--primary);
+        }
+        
+        .sidebar ul li.active {
+            background-color: #ebf3fe;
+            border-left-color: var(--primary);
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .content {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            scroll-margin-top: 80px;
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+        
+        .section:hover {
+            box-shadow: var(--card-shadow);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section h2 {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .section p {
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .badge {
+            background: #ebf3fe;
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .subcategories {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .subcategories.active {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .subcategory {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            border: 1px solid #f1f5f9;
+        }
+        
+        .subcategory:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow);
+            border-color: #e2e8f0;
+        }
+        
+        .subcategory-header {
+            background-size: cover;
+            background-position: center;
+            height: 120px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .python-bg { background: linear-gradient(135deg, #3498db, #9b59b6); }
+        .java-bg { background: linear-gradient(135deg, #f1c40f, #e74c3c); }
+        .cpp-bg { background: linear-gradient(135deg, #2ecc71, #3498db); }
+        .cse-bg { background: linear-gradient(135deg, #9b59b6, #3498db); }
+        .aiml-bg { background: linear-gradient(135deg, #3498db, #2ecc71); }
+        .math-bg { background: linear-gradient(135deg, #e74c3c, #f1c40f); }
+        .polity-bg { background: linear-gradient(135deg, #f1c40f, #9b59b6); }
+        .econ-bg { background: linear-gradient(135deg, #2ecc71, #f1c40f); }
+        .geo-bg { background: linear-gradient(135deg, #3498db, #2ecc71); }
+        .history-bg { background: linear-gradient(135deg, #e74c3c, #9b59b6); }
+        .csat-bg { background: linear-gradient(135deg, #9b59b6, #f1c40f); }
+        .qa-bg { background: linear-gradient(135deg, #f1c40f, #3498db); }
+        .lr-bg { background: linear-gradient(135deg, #3498db, #e74c3c); }
+        
+        .subcategory-content {
+            padding: 20px;
+        }
+        
+        .subcategory h3 {
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .subcategory p {
+            color: var(--gray);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .course-details {
+            background-color: #f8fafc;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .course-details h4 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .course-details ul {
+            list-style-type: none;
+        }
+        
+        .course-details ul li {
+            padding: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        
+        .course-details ul li:last-child {
+            border-bottom: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 30px;
             text-decoration: none;
-            color: black;
+            font-weight: 500;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            border: none;
+            font-size: 14px;
         }
-        .options a:hover {
-            background-color: #ddd;
+        
+        .btn:hover {
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+            transform: translateY(-2px);
         }
-    </style>
-</head>
-<body>
-    <header>
-        <span class="menu" onclick="toggleSidebar()">&#x2630;</span>
-        Learn With Winloss
-    </header>
-    
-    <div class="sidebar" id="sidebar">
-        <a onclick="navigateTo('home')">Home</a>
-        <a onclick="showSubject('polity-options')">Polity</a>
-        <a onclick="showSubject('economics-options')">Economics</a>
-        <a onclick="showSubject('history-options')">History</a>
-    </div>
-    
-    <div class="container" id="home">
-        <div class="subjects">
-            <div class="subject-card" onclick="toggleOptions('polity-options')">Polity</div>
-            <div id="polity-options" class="options">
-                <a href="#">Syllabus</a>
-                <a href="#">Materials</a>
-                <a href="#">Videos</a>
-                <a href="#">Test</a>
-                <a href="#">Your Progress</a>
-                <a href="#">Your Notes</a>
-                <a href="#">Bookmarks</a>
-            </div>
+        
+        .toggle-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .toggle-btn i {
+            margin-right: 5px;
+        }
+        
+        .toggle-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--gray);
+            display: none;
+        }
+        
+        .no-results i {
+            font-size: 50px;
+            margin-bottom: 15px;
+            color: #e2e8f0;
+        }
+        
+        @media (max-width: 768px) {
+            .search-container {
+                max-width: 200px;
+            }
             
-            <div class="subject-card" onclick="toggleOptions('economics-options')">Economics</div>
-            <div id="economics-options" class="options">
-                <a href="#">Syllabus</a>
-                <a href="#">Materials</a>
-                <a href="#">Videos</a>
-                <a href="#">Test</a>
-                <a href="#">Your Progress</a>
-                <a href="#">Your Notes</a>
-                <a href="#">Bookmarks</a>
-            </div>
+            .subcategories.active {
+                grid-template-columns: 1fr;
+            }
             
-            <div class="subject-card" onclick="toggleOptions('history-options')">History</div>
-            <div id="history-options" class="options">
-                <a href="#">Syllabus</a>
-                <a href="#">Materials</a>
-                <a href="#">Videos</a>
-                <a href="#">Test</a>
-                <a href="#">Your Progress</a>
-                <a href="#">Your Notes</a>
-                <a href="#">Bookmarks</a>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        function toggleSidebar() {
-            var sidebar = document.getElementById("sidebar");
-            sidebar.style.left = sidebar.style.left === "0px" ? "-250px" : "0px";
-        }
-
-        function toggleOptions(id) {
-            var options = document.getElementById(id);
-            if (options.style.display === "block") {
-                options.style.display = "none";
-            } else {
-                options.style.display = "block";
+            .section {
+                padding: 20px;
+            }
+            
+            header h1 {
+                font-size: 20px;
             }
         }
-
-        function navigateTo(section) {
-            document.getElementById("home").style.display = "block";
-            toggleSidebar();
+        
+        @media (max-width: 576px) {
+            header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+            
+            .logo
+.logo-container {
+                justify-content: space-between;
+                width: 100%;
+            }
+            
+            .search-container {
+                max-width: 100%;
+            }
         }
-
-        function showSubject(id) {
-            document.getElementById("home").style.display = "block";
-            document.getElementById("polity-options").style.display = "none";
-            document.getElementById("economics-options").style.display = "none";
-            document.getElementById("history-options").style.display = "none";
-            document.getElementById(id).style.display = "block";
-            toggleSidebar();
+        
+        /* Animation Classes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+ .contact-section { background-color: #f0f8ff; border: 2px solid #4CAF50; border-radius: 8px; padding: 20px; margin-top: 30px; }
+    .contact-header { color: #4CAF50; }
+    .contact-badge { background-color: #4CAF50; color: white; padding: 5px 10px; border-radius: 4px; }
+    .contact-toggle-btn { background-color: #4CAF50; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+    .contact-toggle-btn:hover { background-color: #45A049; }
+    .contact-details { display: none; margin-top: 15px; }
+    .contact-details.active { display: block; }
+    .contact-details ul { list-style-type: none; padding: 0; }
+    .contact-details ul li { padding: 5px 0; display: flex; align-items: center; gap: 8px; }
+    </style>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <button class="menu-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Tutor India</h1>
+            </div>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search courses..." onkeyup="searchCourses()">
+                <button onclick="searchCourses()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </header>
+        
+        <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+        
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span>Tutor India</span>
+                <button class="sidebar-close" onclick="closeSidebar()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="sidebar-profile">
+                <div class="profile-image">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-info">
+                    <h3>Student</h3>
+                    <p>Welcome Back!</p>
+                </div>
+            </div>
+            <ul>
+    <li onclick="scrollToSection('home'); closeSidebar()" class="active">
+        <i class="fas fa-home"></i> HOME
+    </li>
+    <li onclick="scrollToSection('programming'); closeSidebar()">
+        <i class="fas fa-code"></i> Programming Languages
+    </li>
+    <li onclick="scrollToSection('btech'); closeSidebar()">
+        <i class="fas fa-laptop-code"></i> BTech Subjects
+    </li>
+    <li onclick="scrollToSection('eamcet'); closeSidebar()">
+        <i class="fas fa-chart-line"></i> EAMCET
+    </li>
+    <li onclick="scrollToSection('upsc'); closeSidebar()">
+        <i class="fas fa-landmark"></i> UPSC
+    </li>
+    <li onclick="scrollToSection('ssc'); closeSidebar()">
+        <i class="fas fa-file-alt"></i> SSC CGL
+    </li>
+    <li onclick="scrollToSection('contact'); closeSidebar()">
+        <i class="fas fa-phone-alt"></i> Contact Us
+    </li>
+</ul>
+        </div>
+        
+        <div class="content">
+            <section id="home" class="section animate-fade-in">
+                <div class="section-header">
+                    <h2>Welcome to Tutor India</h2>
+                    <div class="badge">
+                        <i class="fas fa-star"></i> Premium Learning
+                    </div>
+                </div>
+                <p>Experience the best online learning platform in India. We offer a wide range of courses to help you achieve your academic and professional goals. Explore our diverse course catalog below.</p>
+            </section>
+            
+            <div class="no-results" id="noResults">
+                <i class="fas fa-search"></i>
+                <h3>No courses found</h3>
+                <p>Try a different search term or browse our categories</p>
+            </div>
+            
+            <section id="programming" class="section animate-fade-in">
+                <div class="section-header">
+                    <h2>Programming Languages</h2>
+                    <div class="badge">
+                        <i class="fas fa-code"></i> Technical
+                    </div>
+                </div>
+                <p>Master it within 1 month including live project</p>
+                <button class="toggle-btn" onclick="toggleSubcategories('programming-sub')">
+                    <i class="fas fa-chevron-down"></i> View Courses
+                </button>
+                <div id="programming-sub" class="subcategories">
+                    <div class="subcategory" data-category="programming" data-title="Python">
+                        <div class="subcategory-header python-bg">
+                            <div class="overlay-gradient"></div>
+                        </div>
+                        <div class="subcategory-content">
+                            <h3>Python</h3>
+                            <p>Learn Python programming from scratch and build real-world applications.</p>
+                            <div class="course-details">
+                                <h4>Course Details</h4>
+                                <ul>
+                                    <li><span><i class="far fa-clock"></i> Duration:</span> <span>1 Month</span></li>
+                                    <li><span><i class="fas fa-video"></i> Live Classes:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-headset"></i> 24/7 Support:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-rupee-sign"></i> Fee:</span> <span>₹500</span></li>
+                                </ul>
+                                <button class="btn">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subcategory" data-category="programming" data-title="Java">
+                        <div class="subcategory-header java-bg">
+                            <div class="overlay-gradient"></div>
+                        </div>
+                        <div class="subcategory-content">
+                            <h3>Java</h3>
+                            <p>Master Java programming and develop enterprise applications.</p>
+                            <div class="course-details">
+                                <h4>Course Details</h4>
+                                <ul>
+                                    <li><span><i class="far fa-clock"></i> Duration:</span> <span>1 Month</span></li>
+                                    <li><span><i class="fas fa-video"></i> Live Classes:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-headset"></i> 24/7 Support:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-rupee-sign"></i> Fee:</span> <span>₹500</span></li>
+                                </ul>
+                                <button class="btn">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subcategory" data-category="programming" data-title="C++">
+                        <div class="subcategory-header cpp-bg">
+                            <div class="overlay-gradient"></div>
+                        </div>
+                        <div class="subcategory-content">
+                            <h3>C++</h3>
+                            <p>Learn C++ programming and build efficient, high-performance applications.</p>
+                            <div class="course-details">
+                                <h4>Course Details</h4>
+                                <ul>
+                                    <li><span><i class="far fa-clock"></i> Duration:</span> <span>1 Month</span></li>
+                                    <li><span><i class="fas fa-video"></i> Live Classes:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-headset"></i> 24/7 Support:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-rupee-sign"></i> Fee:</span> <span>₹500</span></li>
+                                </ul>
+                                <button class="btn">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="btech" class="section animate-fade-in">
+                <div class="section-header">
+                    <h2>BTech Subjects</h2>
+                    <div class="badge">
+                        <i class="fas fa-graduation-cap"></i> Academic
+                    </div>
+                </div>
+                <p>Complete it within your specific period including materials, tests, solutions</p>
+                <button class="toggle-btn" onclick="toggleSubcategories('btech-sub')">
+                    <i class="fas fa-chevron-down"></i> View Courses
+                </button>
+                <div id="btech-sub" class="subcategories">
+                    <div class="subcategory" data-category="btech" data-title="CSE">
+                        <div class="subcategory-header cse-bg">
+                            <div class="overlay-gradient"></div>
+                        </div>
+                        <div class="subcategory-content">
+                            <h3>CSE</h3>
+                            <p>Comprehensive courses covering all aspects of Computer Science Engineering.</p>
+                            <div class="course-details">
+                                <h4>Course Details</h4>
+                                <ul>
+                                    <li><span><i class="far fa-clock"></i> Duration:</span> <span>1 Month</span></li>
+                                    <li><span><i class="fas fa-video"></i> Live Classes:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-headset"></i> 24/7 Support:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-rupee-sign"></i> Fee:</span> <span>₹500</span></li>
+                                </ul>
+                                <button class="btn">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subcategory" data-category="btech" data-title="AIML">
+                        <div class="subcategory-header aiml-bg">
+                            <div class="overlay-gradient"></div>
+                        </div>
+                        <div class="subcategory-content">
+                            <h3>AIML</h3>
+                            <p>Learn Artificial Intelligence and Machine Learning with practical applications.</p>
+                            <div class="course-details">
+                                <h4>Course Details</h4>
+                                <ul>
+                                    <li><span><i class="far fa-clock"></i> Duration:</span> <span>1 Month</span></li>
+                                    <li><span><i class="fas fa-video"></i> Live Classes:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-headset"></i> 24/7 Support:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-rupee-sign"></i> Fee:</span> <span>₹500</span></li>
+                                </ul>
+                                <button class="btn">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="eamcet" class="section animate-fade-in">
+                <div class="section-header">
+                    <h2>EAMCET</h2>
+                    <div class="badge">
+                        <i class="fas fa-university"></i> Entrance Exam
+                    </div>
+                </div>
+                <p>Fasttrack your progress to settle yourself within top ranks</p>
+                <button class="toggle-btn" onclick="toggleSubcategories('eamcet-sub')">
+                    <i class="fas fa-chevron-down"></i> View Courses
+                </button>
+                <div id="eamcet-sub" class="subcategories">
+                    <div class="subcategory" data-category="eamcet" data-title="Mathematics">
+                        <div class="subcategory-header math-bg">
+                            <div class="overlay-gradient"></div>
+                        </div>
+                        <div class="subcategory-content">
+                            <h3>Mathematics</h3>
+                            <p>Master EAMCET Mathematics with our structured approach and practice tests.</p>
+                            <div class="course-details">
+                                <h4>Course Details</h4>
+                                <ul>
+                                    <li><span><i class="far fa-clock"></i> Duration:</span> <span>1 Month</span></li>
+                                    <li><span><i class="fas fa-video"></i> Live Classes:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-headset"></i> 24/7 Support:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-rupee-sign"></i> Fee:</span> <span>₹500</span></li>
+                                </ul>
+                                <button class="btn">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="upsc" class="section animate-fade-in">
+                <div class="section-header">
+                    <h2>UPSC</h2>
+                    <div class="badge">
+                        <i class="fas fa-shield-alt"></i> Civil Services
+                    </div>
+                </div>
+                <p>Don't struggle alone, let's struggle together to get things done.</p>
+                <button class="toggle-btn" onclick="toggleSubcategories('upsc-sub')">
+                    <i class="fas fa-chevron-down"></i> View Courses
+                </button>
+                <div id="upsc-sub" class="subcategories">
+                    <div class="subcategory" data-category="upsc" data-title="Polity">
+                        <div class="subcategory-header polity-bg">
+                            <div class="overlay-gradient"></div>
+                        </div>
+                        <div class="subcategory-content">
+                            <h3>Polity</h3>
+                            <p>Comprehensive coverage of Indian Polity for UPSC examinations.</p>
+                            <div class="course-details">
+                                <h4>Course Details</h4>
+                                <ul>
+                                    <li><span><i class="far fa-clock"></i> Duration:</span> <span>1 Month</span></li>
+                                    <li><span><i class="fas fa-video"></i> Live Classes:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-headset"></i> 24/7 Support:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-rupee-sign"></i> Fee:</span> <span>₹500</span></li>
+                                </ul>
+                                <button class="btn">Enroll Now</button>
+</div>
+                        </div>
+                    </div>
+                    <div class="subcategory" data-category="upsc" data-title="Economics">
+                        <div class="subcategory-header econ-bg">
+                            <div class="overlay-gradient"></div>
+                        </div>
+                        <div class="subcategory-content">
+                            <h3>Economics</h3>
+                            <p>Master Indian and Global Economics for UPSC with our expert faculty.</p>
+                            <div class="course-details">
+                                <h4>Course Details</h4>
+                                <ul>
+                                    <li><span><i class="far fa-clock"></i> Duration:</span> <span>1 Month</span></li>
+                                    <li><span><i class="fas fa-video"></i> Live Classes:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-headset"></i> 24/7 Support:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-rupee-sign"></i> Fee:</span> <span>₹500</span></li>
+                                </ul>
+                                <button class="btn">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subcategory" data-category="upsc" data-title="Geography">
+                        <div class="subcategory-header geo-bg">
+                            <div class="overlay-gradient"></div>
+                        </div>
+                        <div class="subcategory-content">
+                            <h3>Geography</h3>
+                            <p>Learn Indian and World Geography with comprehensive map-based approach.</p>
+                            <div class="course-details">
+                                <h4>Course Details</h4>
+                                <ul>
+                                    <li><span><i class="far fa-clock"></i> Duration:</span> <span>1 Month</span></li>
+                                    <li><span><i class="fas fa-video"></i> Live Classes:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-headset"></i> 24/7 Support:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-rupee-sign"></i> Fee:</span> <span>₹500</span></li>
+                                </ul>
+                                <button class="btn">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subcategory" data-category="upsc" data-title="Ancient History">
+                        <div class="subcategory-header history-bg">
+                            <div class="overlay-gradient"></div>
+                        </div>
+                        <div class="subcategory-content">
+                            <h3>Ancient History</h3>
+                            <p>Explore Ancient Indian History with our detailed course material and expert guidance.</p>
+                            <div class="course-details">
+                                <h4>Course Details</h4>
+                                <ul>
+                                    <li><span><i class="far fa-clock"></i> Duration:</span> <span>1 Month</span></li>
+                                    <li><span><i class="fas fa-video"></i> Live Classes:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-headset"></i> 24/7 Support:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-rupee-sign"></i> Fee:</span> <span>₹500</span></li>
+                                </ul>
+                                <button class="btn">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subcategory" data-category="upsc" data-title="CSAT">
+                        <div class="subcategory-header csat-bg">
+                            <div class="overlay-gradient"></div>
+                        </div>
+                        <div class="subcategory-content">
+                            <h3>CSAT</h3>
+                            <p>Prepare for CSAT with our specialized approach to aptitude and reasoning.</p>
+                            <div class="course-details">
+                                <h4>Course Details</h4>
+                                <ul>
+                                    <li><span><i class="far fa-clock"></i> Duration:</span> <span>1 Month</span></li>
+                                    <li><span><i class="fas fa-video"></i> Live Classes:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-headset"></i> 24/7 Support:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-rupee-sign"></i> Fee:</span> <span>₹500</span></li>
+                                </ul>
+                                <button class="btn">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="ssc" class="section animate-fade-in">
+                <div class="section-header">
+                    <h2>SSC CGL</h2>
+                    <div class="badge">
+                        <i class="fas fa-briefcase"></i> Government Jobs
+                    </div>
+                </div>
+                <p>Fastness is the key. Let's crack it.</p>
+                <button class="toggle-btn" onclick="toggleSubcategories('ssc-sub')">
+                    <i class="fas fa-chevron-down"></i> View Courses
+                </button>
+                <div id="ssc-sub" class="subcategories">
+                    <div class="subcategory" data-category="ssc" data-title="Quantitative Aptitude">
+                        <div class="subcategory-header qa-bg">
+                            <div class="overlay-gradient"></div>
+                        </div>
+                        <div class="subcategory-content">
+                            <h3>Quantitative Aptitude</h3>
+                            <p>Master mathematics and numerical ability for SSC CGL examinations.</p>
+                            <div class="course-details">
+                                <h4>Course Details</h4>
+                                <ul>
+                                    <li><span><i class="far fa-clock"></i> Duration:</span> <span>1 Month</span></li>
+                                    <li><span><i class="fas fa-video"></i> Live Classes:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-headset"></i> 24/7 Support:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-rupee-sign"></i> Fee:</span> <span>₹500</span></li>
+                                </ul>
+                                <button class="btn">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subcategory" data-category="ssc" data-title="Logical Reasoning">
+                        <div class="subcategory-header lr-bg">
+                            <div class="overlay-gradient"></div>
+                        </div>
+                        <div class="subcategory-content">
+                            <h3>Logical Reasoning</h3>
+                            <p>Develop critical thinking and problem-solving skills for SSC CGL examinations.</p>
+                            <div class="course-details">
+                                <h4>Course Details</h4>
+                                <ul>
+                                    <li><span><i class="far fa-clock"></i> Duration:</span> <span>1 Month</span></li>
+                                    <li><span><i class="fas fa-video"></i> Live Classes:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-headset"></i> 24/7 Support:</span> <span>Yes</span></li>
+                                    <li><span><i class="fas fa-rupee-sign"></i> Fee:</span> <span>₹500</span></li>
+                                </ul>
+                                <button class="btn">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+<section id="contact" class="section contact-section">
+    <div class="section-header contact-header">
+        <h2>Contact Details</h2>
+        <div class="badge contact-badge">
+            <i class="fas fa-phone-alt"></i> Get in Touch
+        </div>
+    </div>
+    <button class="toggle-btn contact-toggle-btn" onclick="toggleContactDetails()">
+        <i class="fas fa-envelope"></i> Show Contact Details
+    </button>
+    <div id="contact-details" class="contact-details">
+        <ul>
+            <li><span><i class="fas fa-phone"></i> Phone:</span> <span>+91 9876543210</span></li>
+            <li><span><i class="fas fa-envelope"></i> Email:</span> <span>info@tutorindia.com</span></li>
+            <li><span><i class="fab fa-instagram"></i> Instagram:</span> <span>@tutor_india</span></li>
+        </ul>
+    </div>
+</section>
+        </div>
+    </div>
+
+    <script>
+function toggleContactDetails() {
+        const contactDetails = document.getElementById('contact-details');
+        if (contactDetails.classList.contains('active')) {
+            contactDetails.classList.remove('active');
+        } else {
+            contactDetails.classList.add('active');
+        }
+    }
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+        
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+        
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({
+                behavior: 'smooth'
+            });
+            
+            // Update active state in sidebar
+            const sidebarItems = document.querySelectorAll('.sidebar ul li');
+            sidebarItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.textContent.trim().toLowerCase().includes(id.toLowerCase())) {
+                    item.classList.add('active');
+                }
+            });
+        }
+        
+        function toggleSubcategories(id) {
+            const element = document.getElementById(id);
+            if (element.classList.contains('active')) {
+                element.classList.remove('active');
+            } else {
+                // Close all other subcategories
+                const allSubcategories = document.querySelectorAll('.subcategories');
+                allSubcategories.forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Open the clicked one
+                element.classList.add('active');
+            }
+        }
+        
+        function searchCourses() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const sections = document.querySelectorAll('.section');
+            const subcategories = document.querySelectorAll('.subcategory');
+            const noResults = document.getElementById('noResults');
+            
+            let hasResults = false;
+            
+            // If search term is empty, show all sections and hide no results
+            if (searchTerm === '') {
+                sections.forEach(section => {
+                    if (section.id !== 'home') {
+                        section.style.display = 'block';
+                    }
+                });
+                
+                subcategories.forEach(sub => {
+                    sub.style.display = 'block';
+                });
+                
+                noResults.style.display = 'none';
+                return;
+            }
+            
+            // Hide all sections except home
+            sections.forEach(section => {
+                if (section.id !== 'home') {
+                    section.style.display = 'none';
+                }
+            });
+            
+            // First, check if any section's title matches the search term
+            sections.forEach(section => {
+                const sectionTitle = section.querySelector('h2').textContent.toLowerCase();
+                const sectionDesc = section.querySelector('p').textContent.toLowerCase();
+                
+                if ((sectionTitle.includes(searchTerm) || sectionDesc.includes(searchTerm)) && section.id !== 'home') {
+                    section.style.display = 'block';
+                    
+                    // Make sure the subcategories are expanded
+                    const subId = section.id + '-sub';
+                    const subElement = document.getElementById(subId);
+                    if (subElement) {
+                        subElement.classList.add('active');
+                    }
+                    
+                    // Show all subcategories in this section
+                    const sectionSubcategories = section.querySelectorAll('.subcategory');
+                    sectionSubcategories.forEach(sub => {
+                        sub.style.display = 'block';
+                    });
+                    
+                    hasResults = true;
+                }
+            });
+            
+            // Then check if any subcategory matches the search term
+            subcategories.forEach(sub => {
+                const title = sub.querySelector('h3').textContent.toLowerCase();
+                const desc = sub.querySelector('p').textContent.toLowerCase();
+                const category = sub.getAttribute('data-category');
+                
+                sub.style.display = 'none'; // Hide by default
+                
+                if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+                    // Show the parent section
+                    const parentSection = document.getElementById(category);
+                    if (parentSection) {
+                        parentSection.style.display = 'block';
+                    }
+                    
+                    // Make sure the subcategories are expanded
+                    const subId = category + '-sub';
+                    const subElement = document.getElementById(subId);
+                    if (subElement) {
+                        subElement.classList.add('active');
+                    }
+                    
+                    // Show this subcategory
+                    sub.style.display = 'block';
+                    hasResults = true;
+                }
+            });
+            
+            // Show or hide "no results" message
+            noResults.style.display = hasResults ? 'none' : 'block';
+        }
+        
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+            
+            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target) && sidebar.classList.contains('active')) {
+                closeSidebar();
+            }
+        });
+        
+        // Add animation classes to sections as they come into view
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+        });
     </script>
 </body>
 </html>
